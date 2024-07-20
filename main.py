@@ -8,7 +8,7 @@ class Element:
     def __init__(self, name: str, tabs: int = 1):
         self.name = name
         self.tabs = tabs
-        self.btn = PySimpleGUI.Button(button_text="", key=self)
+        self.btn = PySimpleGUI.Button(button_text="x", key=lambda: pasteText(self))
 
 
 def pasteText(element: Element) -> None:
@@ -53,8 +53,9 @@ def main():
                Element("Afdøde død dato", tabs=2)]
 
     elements = []
-    elements.extend([[PySimpleGUI.Button("Hent kunde", key="kundeCopy"), PySimpleGUI.Button(
-        "Hent afdøde", key="afdoedeCopy"), PySimpleGUI.Button("Nulstil", key="nulstil")]])
+    elements.extend([[PySimpleGUI.Button("Hent kunde", key=lambda: getText(kunde)),
+                      PySimpleGUI.Button("Hent afdøde", key=lambda: getText(afdoede)),
+                      PySimpleGUI.Button("Nulstil", key=lambda: nulstil(kunde + afdoede))]])
     elements.extend([[PySimpleGUI.HorizontalSeparator(color='dark blue')]])
     elements.extend([[PySimpleGUI.Text(element.name, size=18), element.btn] for element in kunde])
     elements.extend([[PySimpleGUI.HorizontalSeparator(color='dark blue')]])
@@ -66,15 +67,8 @@ def main():
         event, _ = window.read() or (None, None)  # if None return tuple of None
         if event == PySimpleGUI.WIN_CLOSED:
             break
-        elif event == "kundeCopy":
-            getText(kunde)
-        elif event == "afdoedeCopy":
-            getText(afdoede)
-        elif event == "nulstil":
-            nulstil(kunde + afdoede)
-        elif ((event in kunde) or (event in afdoede)):
-            assert isinstance(event, Element)
-            pasteText(event)
+        elif callable(event):
+            event()
 
     window.close()
 
