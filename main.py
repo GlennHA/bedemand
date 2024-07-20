@@ -29,6 +29,11 @@ def getText(elements: list[Element]) -> None:
         element.btn.update(text=s)
 
 
+def nulstil(elements: list[Element]) -> None:
+    for element in elements:
+        element.btn.update(text='')
+
+
 def main():
     kunde = [Element("Kunde cpr"),
              Element("Kunde fornavn", tabs=2),
@@ -47,9 +52,9 @@ def main():
                Element("Afdøde by"),
                Element("Afdøde død dato", tabs=2)]
 
-    # elements: list[list[PySimpleGUI.Text | PySimpleGUI.Button]] = []
     elements = []
-    elements.extend([[PySimpleGUI.Button("Hent kunde", key="kundeCopy"), PySimpleGUI.Button("Hent afdøde", key="afdoedeCopy")]])
+    elements.extend([[PySimpleGUI.Button("Hent kunde", key="kundeCopy"), PySimpleGUI.Button(
+        "Hent afdøde", key="afdoedeCopy"), PySimpleGUI.Button("Nulstil", key="nulstil")]])
     elements.extend([[PySimpleGUI.HorizontalSeparator(color='dark blue')]])
     elements.extend([[PySimpleGUI.Text(element.name, size=18), element.btn] for element in kunde])
     elements.extend([[PySimpleGUI.HorizontalSeparator(color='dark blue')]])
@@ -65,6 +70,8 @@ def main():
             getText(kunde)
         elif event == "afdoedeCopy":
             getText(afdoede)
+        elif event == "nulstil":
+            nulstil(kunde + afdoede)
         elif ((event in kunde) or (event in afdoede)):
             assert isinstance(event, Element)
             pasteText(event)
