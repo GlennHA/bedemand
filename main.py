@@ -30,26 +30,29 @@ def getText(elements: list[Element]) -> None:
 
 
 def main():
-    kunde = [Element("kunde_cpr"),
-             Element("kunde_fornavn", tabs=2),
-             Element("kunde_efternavn"),
-             Element("kunde_email"),
-             Element("kunde_telefon"),
-             Element("kunde_adresse"),
-             Element("kunde_postnummer"),
-             Element("kunde_by")]
+    kunde = [Element("Kunde cpr"),
+             Element("Kunde fornavn", tabs=2),
+             Element("Kunde efternavn"),
+             Element("Kunde email"),
+             Element("Kunde telefon"),
+             Element("Kunde adresse"),
+             Element("Kunde postnummer"),
+             Element("Kunde by")]
 
-    afdoede = [Element("afdoede_cpr"),
-               Element("afdoede_fornavn", tabs=4),
-               Element("afdoede_efternavn"),
-               Element("afdoede_adresse", tabs=2),
-               Element("afdoede_postnummer"),
-               Element("afdoede_by"),
-               Element("afdoede_doed_dato", tabs=2)]
+    afdoede = [Element("Afdøde cpr"),
+               Element("Afdøde fornavn", tabs=4),
+               Element("Afdøde efternavn"),
+               Element("Afdøde adresse", tabs=2),
+               Element("Afdøde postnummer"),
+               Element("Afdøde by"),
+               Element("Afdøde død dato", tabs=2)]
 
-    elements: list[list[PySimpleGUI.Text | PySimpleGUI.Button]] = []
+    # elements: list[list[PySimpleGUI.Text | PySimpleGUI.Button]] = []
+    elements = []
     elements.extend([[PySimpleGUI.Button("Hent kunde", key="kundeCopy"), PySimpleGUI.Button("Hent afdøde", key="afdoedeCopy")]])
+    elements.extend([[PySimpleGUI.HorizontalSeparator(color='dark blue')]])
     elements.extend([[PySimpleGUI.Text(element.name, size=18), element.btn] for element in kunde])
+    elements.extend([[PySimpleGUI.HorizontalSeparator(color='dark blue')]])
     elements.extend([[PySimpleGUI.Text(element.name, size=18), element.btn] for element in afdoede])
 
     window = PySimpleGUI.Window(title="Hej Nette", layout=elements, keep_on_top=True)
